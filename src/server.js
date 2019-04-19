@@ -4,6 +4,7 @@ const cors = require("cors");
 const jwt = require("express-jwt");
 const gracefulShutdown = require("http-graceful-shutdown");
 
+const RequestError = require("./utils/RequestError");
 const server_config = require("./config/server");
 
 const api = require("./api/api");
@@ -38,17 +39,17 @@ app.use((err, req, res, next) => {
       error: 0,
       data: {}
     });
-    res.end();
-  } else if (err instanceof RequestError) {
-    // request error
-    res.status(err.status);
-    res.json({
-      message: err.message,
-      success: false,
-      error: err.code,
-      data: {}
-    });
-    res.end();
+    res.end(); 
+  // } else if (err instanceof RequestError) {
+  //   // request error
+  //   res.status(err.status);
+  //   res.json({
+  //     message: err.message,
+  //     success: false,
+  //     error: err.code,
+  //     data: {}
+  //   });
+  //   res.end();
   } else {
     // other error
     console.log(err);
