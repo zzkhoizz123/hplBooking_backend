@@ -84,7 +84,6 @@ router.post("/signup", (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
 
-  
     if (!username || !password) {
       res.json({
         message: "Error occur",
