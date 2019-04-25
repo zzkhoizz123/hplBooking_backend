@@ -40,14 +40,14 @@ const UserSchema = new Schema({
         require: false,
     },
     
-    workingDate:{ //[1,2,1,2,1,2] // 1: 7h-11h, 2: 1h-5h, 3: both
-         type: [Number],
-         require: false,
-         default: null
-    },
+    // workingDate:{ //[1,2,1,2,1,2] // 1: 7h-11h, 2: 1h-5h, 3: both
+    //      type: [Number],
+    //      require: false,
+    //      default: null
+    // },
 
     department:{
-        type: Number,
+        type: String,
         require: false,
         default: null
     },
@@ -57,18 +57,6 @@ const UserSchema = new Schema({
         require: false,
         default: null
     }
-
-    // startWork: { // use for doctor
-    //     type: Object,
-    //     require: false,
-    //     default: Date.now()
-    // },
-
-    // endWork: { // use for doctor
-    //     type: Object,
-    //     require: true
-    // },
-    
 });
 
 module.exports = User = mongoose.model('user', UserSchema);

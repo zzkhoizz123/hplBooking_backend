@@ -6,13 +6,14 @@ const SeatModel = require('./Seat');
 const UserModel = require('./User');
 
 
-const CreateSeatWithTime = (startDate, endDate, department, userId) => {
+const CreateSeatWithTime = (startDate, endDate, department, userId, lst1) => {
 return new Promise((resolve, reject)=>{
 
-    const id = new ObjectId("000d9f7a65ddd10ea830b293");
-    var lst = [id];
+    var lst = lst1;
     //let check = true;
     //while(check){
+    start:
+    //continue start;
         UserModel.findOne({
             $and:[
                 {_id : {$nin: lst}},
@@ -29,8 +30,8 @@ return new Promise((resolve, reject)=>{
                     ]
                 })
                 .then(arrSeat =>{
-                    if(arrSeat.length < 2){
-                        //console.log("AAAAAAAAAa");
+                    if(arrSeat.length < 20){
+                        console.log("length " + arrSeat.length);
                         const seat = new SeatModel({
                             startTime : startDate,
                             endTime : endDate,
@@ -42,19 +43,18 @@ return new Promise((resolve, reject)=>{
                         });
                         SeatModel.create(seat)
                         .then(seat=>{
-                            UserModel.findById(seat._id)
-                            .select("-__v")
-                            .exec((err2, res) => {
-                            if (err2) {
-                                return reject("Error occur hereAAA");
-                            }
-                            return resolve(res);
-                           
-                            });
+                            return resolve(seat);       
                         })
                     }
                     else {
                         lst.push(doctor._id);
+                        CreateSeatWithTime(startDate, endDate, department, userId, lst)
+                            .then (seat=>{
+                                return resolve(seat);
+                            })
+                            .catch(err=>{
+                                return reject(err);
+                            })
                     }                 
                     })   
             }
@@ -69,8 +69,82 @@ return new Promise((resolve, reject)=>{
 });
 }
 
+const GetSeatByID = id => {
+    return new Promise((resolve, reject) => {
+      SeatModel.findOne({ _id: new ObjectId(id) })
+        .select("-__v")
+        .exec((err, res) => {
+          if (err) {
+            return reject("Error occur");
+          }
+          return resolve(res);
+        });
+    });
+  };
+
+  const GetAllSeatByUserID = userid => {
+    return new Promise((resolve, reject) => {
+        UserModel.findOne({_id: new ObjectId(userid)})
+            .then (user=>{
+                if(user.role == 0){
+                    SeatModel.find({ patient: new ObjectId(userid) })
+                    .then(data=>{
+                        return resolve(data); 
+                    })
+                    .catch(err=>{
+                        return reject("Error occur");
+                    }) 
+                }
+                else{
+                    SeatModel.find({ doctor: new ObjectId(userid) })
+                    .then(data=>{
+                        return resolve(data); 
+                    })
+                    .catch(err=>{
+                        return reject("Error occur");
+                    }) 
+                }
+            })
+            .catch(err =>{
+                return reject("Error occur");
+            })       
+     });
+  };
+
+  const DeleteSeatByID = (seatid, userid) => {
+    return new Promise((resolve, reject) => {
+        UserModel.findOne({_id: new ObjectId(userid)})
+            .then (user=>{
+                if(user.role == 0){
+                    SeatModel.deleteOne({ 
+                        $and:[
+                          {_id: new ObjectId(seatid)},
+                          {patient: new ObjectId(userid)}
+                          ]
+                      })
+                      .select("-__v")
+                      .exec((err, res) => {
+                        if (err) {
+                          return reject("Error occur");
+                        }
+                        return resolve(res);
+                      });
+                }
+                else{
+                    return reject("Error occur");
+                }               
+            })
+            .catch(err=>{
+                return reject("Error occur");
+            })
+    });
+  };
+
 module.exports = {
-    CreateSeatWithTime
+    CreateSeatWithTime,
+    GetAllSeatByUserID,
+    GetSeatByID,
+    DeleteSeatByID
   };
 
 

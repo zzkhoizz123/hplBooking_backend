@@ -5,6 +5,7 @@ const moment = require("moment");
 const UserModel = require("./../../model/UserModel");
 const RequestError = require("./../../utils/RequestError");
 
+const departmentConvert = require("./../../utils/DepartmentConvert");
 
 const router = Router();
 
@@ -19,13 +20,13 @@ router.post("/signup", (req, res) => {
     const role = req.body.role;
     const SSN = req.body.SSN;
     const phoneNumber = req.body.phoneNumber;  
-    const workingDate = req.body.workingDate; //[1,2,1,2,3,2]
-    let department = 0;
+   // const workingDate = req.body.workingDate; //[1,2,1,2,3,2]
+    let department = "";
     let room = 0;
     if(role == 1 ){
-      department = req.body.department;
+      department = departmentConvert(req.body.department);
       room = req.body.room;
-      console.log(req.body.department);
+      console.log("department " + department);
     }
     // const startWork = req.body.startWork;
     // const duration = req.body.duration; // count in minutes
@@ -55,7 +56,7 @@ router.post("/signup", (req, res) => {
       role,
       SSN,
       phoneNumber,
-      workingDate,
+      //workingDate,
       department,
       room
     )

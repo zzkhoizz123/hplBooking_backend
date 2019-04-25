@@ -7,7 +7,8 @@ const ObjectId = require("mongodb").ObjectID;
 const SeatModel = require('./Seat');
 const UserModel = require('./User');
 
-const CreateNewUser = (username, password, email, name, sex, newDoB, role, SSN, phoneNumber, workingDate, department, room)=>{
+
+const CreateNewUser = (username, password, email, name, sex, newDoB, role, SSN, phoneNumber, department, room)=>{
     return new Promise((resolve, reject)=>{
         const DoB = moment(newDoB).toDate();
         // const startWork = moment(newstartWork).toDate()
@@ -34,7 +35,7 @@ const CreateNewUser = (username, password, email, name, sex, newDoB, role, SSN, 
                 role, 
                 SSN,
                 phoneNumber,
-                workingDate,
+               // workingDate,
                 department,
                 room
                 // startWork,
