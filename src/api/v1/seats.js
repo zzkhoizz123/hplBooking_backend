@@ -5,6 +5,7 @@ const UserModel = require("./../../model/UserModel");
 const SeatModel = require("./../../model/SeatModel");
 
 const shiftConvert = require("./../../utils/ShiftConvert");
+const departmentConvert = require("./../../utils/DepartmentConvert");
 
 const ObjectId = require("mongodb").ObjectID;
 
@@ -13,21 +14,26 @@ const router = Router();
 
 router.post("/", (req, res, next) => {
     const userId = req.user.id;
-    const date = req.body.date;
+    const date = req.body.date; // "2019-02-19"
     const shift = req.body.shift;
     const department = req.body.department;
 
     // console.log(userId);
-    // console.log(date);
-    // console.log(shift);
+
+    console.log("Ngày: " + date);
+    console.log("Ca: " + shift);
+    console.log("PHòng ban: " + department);
 
     const convert = shiftConvert(date, shift);
-    console.log(convert.startDate);
-    console.log(convert.endDate);
-    const id = new ObjectId("000d9f7a65ddd10ea830b293");
+    const convertDep = departmentConvert(department);
+    console.log("PHòng ban đã convert: " + convertDep);
+
+    console.log("Bắt đầu:" + convert.startDate);
+    console.log("Kết thúc" + convert.endDate);
+    const id = new ObjectId("00c80d56dc4b545724eefd2c");
     lst = [id];
 
-    SeatModel.CreateSeatWithTime(convert.startDate, convert.endDate, department, userId, lst)
+    SeatModel.CreateSeatWithTime(convert.startDate, convert.endDate, convertDep, userId, lst)
       .then(result => {
         res.status(200);
         return res.json({

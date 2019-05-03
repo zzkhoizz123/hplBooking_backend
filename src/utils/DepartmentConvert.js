@@ -1,11 +1,12 @@
 
 function convertDepartment(number){
     let ret = ""; 
-    if(number ==1){
+    if(number == 1){
         ret = "ĐA KHOA";
         return ret;
     }
     else if (number == 2){
+        console.log("Đã vào conver Dep:" )
         ret = "NHA KHOA";
         return ret;
     }

@@ -21,7 +21,7 @@ const SeatSchema = new Schema({
     },
 
     department:{
-        type: Number,
+        type: String,
         require: true
     },
 

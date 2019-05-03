@@ -6,9 +6,10 @@ function shiftConvert(date, shifting){
     }
     switch(shifting){
         case 1: // 7h-8h
-            console.log(moment(date).add(7, "hours").toDate());
+            // console.log(moment(date).add(7, "hours").toDate());
             shift.startDate = moment(date).add(7, "hours");
             shift.endDate = moment(date).add(8, "hours");
+            console.log(shift.startDate)
             break;
         case 2: // 8h-9h
             shift.startDate = moment(date).add(8, "hours");
@@ -37,7 +38,7 @@ function shiftConvert(date, shifting){
         case 8: // 16h-17h
             shift.startDate = moment(date).add(16, "hours");
             shift.endDate = moment(date).add(17, "hours") ;
-            break;
+            break;        
     }
     return shift;
 }

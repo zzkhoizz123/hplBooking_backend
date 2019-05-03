@@ -26,7 +26,7 @@ return new Promise((resolve, reject)=>{
                 SeatModel.find({
                     $and:[
                         {doctor: doctor._id},
-                        {startTime: {$eq: startDate.toDate()} }
+                        {startTime: {$eq: startDate} }
                     ]
                 })
                 .then(arrSeat =>{
@@ -63,6 +63,7 @@ return new Promise((resolve, reject)=>{
             }
         })
         .catch(err=>{
+            console.log(err);
             return reject("Error occur hereBB");
         })
    // }  
