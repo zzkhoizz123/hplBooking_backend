@@ -26,7 +26,7 @@ return new Promise((resolve, reject)=>{
                 SeatModel.find({
                     $and:[
                         {doctor: doctor._id},
-                        {startTime: {$eq: startDate} }
+                        {startTime: {$eq: startDate.toDate()} }
                     ]
                 })
                 .then(arrSeat =>{
