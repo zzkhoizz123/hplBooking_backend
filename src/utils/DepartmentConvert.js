@@ -6,7 +6,6 @@ function convertDepartment(number){
         return ret;
     }
     else if (number == 2){
-        console.log("Đã vào conver Dep:" )
         ret = "NHA KHOA";
         return ret;
     }

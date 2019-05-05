@@ -32,6 +32,15 @@ router.post("/", (req, res, next) => {
     console.log("Kết thúc" + convert.endDate);
     const id = new ObjectId("00c80d56dc4b545724eefd2c");
     lst = [id];
+    console.log(Date.now());
+    if(Date.now() > convert.startDate){
+      return res.json({
+        message: "Lỗi ngày rồi má",
+        success: false,
+        error: 0,
+        data : {}
+      });
+    }
 
     SeatModel.CreateSeatWithTime(convert.startDate, convert.endDate, convertDep, userId, lst)
       .then(result => {

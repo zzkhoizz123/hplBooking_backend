@@ -176,5 +176,32 @@ router.post("/signup", (req, res) => {
         return;
       });
   });
+
+  
+
+  router.get("/user/:id", (req, res, next) => {
+    userid = req.params.id;
+    UserModel.GetUserByID(userid)
+      .then(data => {
+        res.status(200);
+        res.json({
+          message: "User with Id: " + userid + " info",
+          success: true,
+          error: 0,
+          data
+        });
+      })
+      .catch(msg => {
+        res.json({
+          message: "Error occur",
+          success: false,
+          error: 0,
+          data : {}
+        });
+        return;
+      });
+  });
+
+
   
 module.exports = router;
