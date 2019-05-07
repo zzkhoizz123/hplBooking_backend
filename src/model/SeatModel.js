@@ -1,4 +1,5 @@
 const Promise = require("promise");
+const moment = require("moment");
 
 const ObjectId = require("mongodb").ObjectID;
 
@@ -141,11 +142,34 @@ const GetSeatByID = id => {
     });
   };
 
+
+const SendMailForTodaySeat = () => {
+    return new Promise((resolve, reject) => {
+        
+      const startdate = moment(Date.now()).startOf('day').toDate();
+      const enddate = moment(Date.now()).endOf('day').toDate();
+      SeatModel.find({ 
+        $and:[
+          {startTime: {$gt: startdate}},
+          {startTime: {$lt: enddate}}
+          ]
+      })
+        .then(data=>{
+            return resolve(data);
+        })
+        .catch(err=>{
+            return reject("Error occur here");
+        })
+    });
+  };
+  
+
 module.exports = {
     CreateSeatWithTime,
     GetAllSeatByUserID,
     GetSeatByID,
-    DeleteSeatByID
+    DeleteSeatByID,
+    SendMailForTodaySeat
   };
 
 

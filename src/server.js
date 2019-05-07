@@ -1,11 +1,19 @@
+const moment = require("moment")
+
 const express =  require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const jwt = require("express-jwt");
 const gracefulShutdown = require("http-graceful-shutdown");
+const every = require('every-moment');
+const nodemailer = require('nodemailer');
 
 const RequestError = require("./utils/RequestError");
 const server_config = require("./config/server");
+const SeatModel = require("./model/SeatModel");
+const UserModel = require("./model/UserModel");
+
+
 
 const api = require("./api/api");
 
@@ -64,8 +72,57 @@ app.use((err, req, res, next) => {
   }
 });
 
+
+
+
+const setTimer = ()=>{
+  var timer = every(24, 'hours', function() {
+    console.log(this.duration);
+    SeatModel.SendMailForTodaySeat()
+      .then(data=>{
+        data.forEach(element => {
+          UserModel.GetUserByID(element.patient)
+            .then(user=>{
+              var transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                  user: 'zzkhoizz123@gmail.com',
+                  pass: server_config.EMAIL_PASS
+                }                  
+              });
+              
+              var mailOptions = {
+                from: '"Contact HPLBooking" <zzkhoizz123@gmail.com>',
+                to: user.email,
+                subject: 'Lịch khám bệnh từ HplBooking',
+                text: 'Bạn có lịch khám bệnh vào lúc ' + moment(element.startTime).format('LLLL') 
+              };
+              
+              transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                  console.log("Error tại đây");
+                  console.log(error);
+                } else {
+                  console.log('Email sent: ' + info.response);
+                }
+              });
+            })
+            .catch(err=>{
+              console.log("Error occur here");
+              console.log(err);
+            })
+        });
+      })
+      .catch(err=>{
+        console.log(err);
+    })
+  });
+}
+
+
 const server = () =>
   new Promise((resolve, reject) => {
+    setTimer();
     console.log("Starting Server");
     const s = app.listen(server_config.PORT, err => {
       if (err) {
@@ -76,5 +133,6 @@ const server = () =>
       }
     });
   });
+
 
 module.exports = server;
