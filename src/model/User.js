@@ -56,6 +56,12 @@ const UserSchema = new Schema({
         type: Number,
         require: false,
         default: null
+    },
+
+    active:{ // use for doctor
+        type: Boolean,
+        require: false,
+        default: false
     }
 });
 

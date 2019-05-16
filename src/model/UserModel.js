@@ -66,6 +66,9 @@ const VerifyUser = (username, password) => {
     UserModel.findOne({ username }, (err, user) => {
       if (user) {
         if (bcrypt.compareSync(password, user.password)) {
+          if(user.role==1 && user.active==false){
+            reject("Doctor is not approve!");
+          }
           resolve({
             role: user.role,
             id: user._id,
@@ -74,13 +77,14 @@ const VerifyUser = (username, password) => {
             email: user.email,
             phoneNumber: user.phoneNumber,
             SSN: user.SSN,
-            DoB: user.DoB
+            DoB: user.DoB,
+            Active: user.active
           });
         } else {
-          reject("Wrong credential");
+          reject("Input is not invalid!");
         }
       } else {
-        reject("Wrong credential");
+        reject("Input is not invalid!");
       }
     });
   });
@@ -134,10 +138,70 @@ const GetUserByID = id => {
       });
   });
 };
+
+const GetAllDoctorNotAppove = () => {
+  return new Promise((resolve, reject) => {
+      UserModel.find({
+          $and:[
+              {role: 1},
+              {active: false}
+              ]
+          })
+          .then (user=>{
+            return resolve(user); 
+          })
+          .catch(err =>{
+            return reject("Error occur");
+          })       
+   });
+};
+
+
+const DeleteUserByID = (userid) => {
+  console.log(userid)
+  return new Promise((resolve, reject) => {
+    UserModel.deleteOne({_id: new ObjectId(userid)})
+      .select("-__v")
+      .exec((err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(res);
+      });
+  });
+};
+
+
+const acceptDoctor = (id) => {
+  return new Promise((resolve, reject) => {
+    UserModel.findOne({ _id: new ObjectId(id) }, (err, helper) => {
+      if(err){
+        return reject("Wrong username");
+      }
+  
+      UserModel.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { active: true } },
+        (err1, result) => {
+          if (err1) {
+            return reject("Error occur");
+          }
+
+          console.log("Ok: " + result);
+          return resolve(result);
+        }
+      );
+    });
+  });
+};
+
 module.exports = {
     CreateNewUser,
     VerifyUser,
     ResetPassword,
-    GetUserByID
+    GetUserByID,
+    GetAllDoctorNotAppove,
+    DeleteUserByID,
+    acceptDoctor
   };
   
