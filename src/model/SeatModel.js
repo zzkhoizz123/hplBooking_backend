@@ -32,7 +32,7 @@ return new Promise((resolve, reject)=>{
                 })
                 .then(arrSeat =>{
                     if(arrSeat.length < 20){
-                        console.log("length " + arrSeat.length);
+                        //console.log("length " + arrSeat.length);
                         const seat = new SeatModel({
                             startTime : startDate,
                             endTime : endDate,
@@ -64,7 +64,7 @@ return new Promise((resolve, reject)=>{
             }
         })
         .catch(err=>{
-            console.log(err);
+            //console.log(err);
             return reject("Error occur hereBB");
         })
    // }  

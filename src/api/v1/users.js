@@ -26,7 +26,7 @@ router.post("/signup", (req, res) => {
   if (role == 1) {
     department = departmentConvert(req.body.department);
     room = req.body.room;
-    console.log("department " + department);
+    //console.log("department " + department);
   }
   // const startWork = req.body.startWork;
   // const duration = req.body.duration; // count in minutes

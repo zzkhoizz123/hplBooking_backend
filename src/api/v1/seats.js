@@ -20,19 +20,19 @@ router.post("/", (req, res, next) => {
 
     // console.log(userId);
 
-    console.log("Ngày: " + date);
-    console.log("Ca: " + shift);
-    console.log("PHòng ban: " + department);
+    //console.log("Ngày: " + date);
+    //console.log("Ca: " + shift);
+    //console.log("PHòng ban: " + department);
 
     const convert = shiftConvert(date, shift);
     const convertDep = departmentConvert(department);
-    console.log("PHòng ban đã convert: " + convertDep);
+    //console.log("PHòng ban đã convert: " + convertDep);
 
-    console.log("Bắt đầu:" + convert.startDate);
-    console.log("Kết thúc" + convert.endDate);
+    //console.log("Bắt đầu:" + convert.startDate);
+    //console.log("Kết thúc" + convert.endDate);
     const id = new ObjectId("00c80d56dc4b545724eefd2c");
     lst = [id];
-    console.log(Date.now());
+    //console.log(Date.now());
     // if(Date.now() > convert.startDate){
     //   return res.json({
     //     message: "Lỗi ngày rồi má",

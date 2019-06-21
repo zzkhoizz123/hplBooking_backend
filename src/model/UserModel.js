@@ -53,7 +53,7 @@ const CreateNewUser = (username, password, email, name, sex, newDoB, role, SSN, 
                     });
                 })
                 .catch(err=>{
-                  console.log(err);
+                  //console.log(err);
                   return reject("Error occur")
                 })
             }
@@ -118,7 +118,7 @@ const ResetPassword = (name, curpwd, newpwd) => {
             return reject("Error occur");
           }
 
-          console.log("Ok: " + result);
+          //console.log("Ok: " + result);
           return resolve(result);
         }
       );
@@ -158,7 +158,7 @@ const GetAllDoctorNotAppove = () => {
 
 
 const DeleteUserByID = (userid) => {
-  console.log(userid)
+ // console.log(userid)
   return new Promise((resolve, reject) => {
     UserModel.deleteOne({_id: new ObjectId(userid)})
       .select("-__v")
@@ -187,7 +187,7 @@ const acceptDoctor = (id) => {
             return reject("Error occur");
           }
 
-          console.log("Ok: " + result);
+          //console.log("Ok: " + result);
           return resolve(result);
         }
       );
