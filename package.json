@@ -32,7 +32,7 @@
     "moment": "^2.23.0",
     "mongodb": "^3.1.10",
     "mongoose": "^5.3.16",
-    "nodemailer": "^6.1.1",
+    "nodemailer": "^6.4.16",
     "promise": "^8.0.2",
     "reflect-metadata": "^0.1.12",
     "ts-custom-error": "^2.2.2",
